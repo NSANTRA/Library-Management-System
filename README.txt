@@ -1,2 +1,4 @@
+**NOTE: The script.bat file does not concern with the LMS.py and the README.txt files.
+
 Library Management System (LMS)
 This is a sample command-line-based LMS built using Python. It allows users to manage a library's books, users, and issues. The system uses MySQL database to store and manage the data.
