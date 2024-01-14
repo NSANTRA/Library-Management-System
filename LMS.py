@@ -9,11 +9,11 @@ import os
 class System:
     def __init__(self):
         # Establishing connection
-        self.mydb = conn.connect(host='localhost', user='root', passwd='NeeSan@1234')
+        self.mydb = conn.connect(host='localhost', user='root', passwd='your_mysql_password')
         self.mycursor = self.mydb.cursor()
 
         # URL encoding the password
-        password_encoded = quote_plus('NeeSan@1234')
+        password_encoded = quote_plus('your_mysql_password')
 
         # Creating the engine
         self.engine = create_engine(f'mysql+mysqlconnector://root:{password_encoded}@localhost')
