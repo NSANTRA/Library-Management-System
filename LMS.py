@@ -9,11 +9,11 @@ import os
 class System:
     def __init__(self):
         # Establishing connection
-        self.mydb = conn.connect(host='localhost', user='root', passwd='your_mysql_password')
+        self.mydb = conn.connect(host='localhost', user='root', passwd='NeeSan@1234')
         self.mycursor = self.mydb.cursor()
 
         # URL encoding the password
-        password_encoded = quote_plus('your_mysql_password')
+        password_encoded = quote_plus('NeeSan@1234')
 
         # Creating the engine
         self.engine = create_engine(f'mysql+mysqlconnector://root:{password_encoded}@localhost')
@@ -36,7 +36,7 @@ class System:
             self.mycursor.execute("CREATE TABLE IF NOT EXISTS Users (User_ID INT AUTO_INCREMENT PRIMARY KEY, Name VARCHAR(255) NOT NULL, Email VARCHAR(255) NOT NULL, Password CHAR(12) NOT NULL CHECK (CHAR_LENGTH(Password) >= 4))")
             
             # SQL Query for creating a table named Issues to store the Book Issues info.
-            self.mycursor.execute("CREATE TABLE IF NOT EXISTS Issues (Issue_ID INT AUTO_INCREMENT PRIMARY KEY, User_ID INT NOT NULL, Book_ID INT NOT NULL, Issue_Date DATE, FOREIGN KEY (User_ID) REFERENCES Users(User_ID), FOREIGN KEY (Book_ID) REFERENCES Books(Book_ID))")
+            self.mycursor.execute("CREATE TABLE IF NOT EXISTS Issues (Issue_ID INT AUTO_INCREMENT PRIMARY KEY, User_ID INT NOT NULL, Name VARCHAR(255) NOT NULL, Book_ID INT NOT NULL, Title VARCHAR(255) NOT NULL, Issue_Date DATE, FOREIGN KEY (User_ID) REFERENCES Users(User_ID), FOREIGN KEY (Book_ID) REFERENCES Books(Book_ID))")
 
             # print("Database and Tables created successfully.")
             self.mydb.commit()
@@ -478,8 +478,10 @@ if __name__ == "__main__":
                                 os.system('cls')
                                 while True:
                                     os.system('cls')
+                                    
                                     print(f"Welcome, {res['Name'].values}")
                                     print()
+
                                     a = int(input("1. Library\n2. My Account\n3. Logout\n\nEnter the choice: "))
                                     match a:
                                         case 1:
