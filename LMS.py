@@ -218,6 +218,25 @@ class System:
         else:
             print("Invalid number")
 
+    def borrow(self):
+        bid = int(input("Enter Book ID: "))
+                                                        
+        sql = f"SELECT * FROM LMS.Books;"
+        res = pd.read_sql_query(sql, self.engine)
+
+        if bid in res['Book_ID'].values:
+            sql = f"INSERT INTO Issues(User_ID, Name, Book_ID, Title, Issue_Date) VALUES({uid}, (SELECT Name FROM LMS.Users WHERE User_ID = {uid}), {bid}, (SELECT Title FROM LMS.Books WHERE Book_ID = {bid}), CURDATE());"
+
+            self.mycursor.execute(sql)
+            self.mydb.commit()
+
+            print("Success")
+            time.sleep(.7)
+                                                        
+        else:
+            print("No such book available!")
+            time.sleep(.7)
+
     # Books Management System Options End
             
     # Users Management System Options Start
@@ -492,18 +511,30 @@ if __name__ == "__main__":
                                         case 1:
                                             while True:
                                                 os.system('cls')
-                                                a = int(input("1. Show Books\n2. Borrow\n3. Return\n4. Back\n\nEnter the choice: "))
+                                                a = int(input("1. Show Books\n2. Show Borrowed Books\n3. Borrow\n4. Return\n5. Back\n\nEnter the choice: "))
                                                 match a:
                                                     case 1:
                                                         x.show()
 
                                                     case 2:
-                                                        pass
+                                                        sql = f"SELECT Issue_ID, Book_ID, Title, Issue_Date FROM LMS.Issues WHERE User_ID = {uid};"
+                                                        res = pd.read_sql_query(sql, x.engine)
+
+                                                        if not res.empty:
+                                                            print(res.sort_values(by = 'Issue_Date'))
+                                                            input("\nPress Enter to continue...")
+
+                                                        else:
+                                                            print("No borrowed books!")
+                                                            time.sleep(.7)
 
                                                     case 3:
-                                                        pass
+                                                       x.borrow()
 
                                                     case 4:
+                                                        pass
+
+                                                    case 5:
                                                         break
 
                                                     case _:
