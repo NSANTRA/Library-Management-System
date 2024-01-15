@@ -453,22 +453,27 @@ if __name__ == "__main__":
 
             case 2:    # User Login
                 while True:
-                    flag = False        # For account deletion to directly go to the Register/Login Page
+                    # For account deletion to directly go to the Register/Login Page
+                    flag = False
                     os.system('cls')
                     a = int(input("1. Register\n2. Login\n3. Back\n\nEnter the choice: "))
                     match a:
                         case 1:
+                            # Code for registering a new user
                             x.uadd()
                             print("Successfully registered!")
                             time.sleep(0.7)
                         
                         case 2:
+                            # Code for user login
                             uid = input("User ID: ")
                             pwd = input("Password: ")
 
+                            # Query the database to check the user's credentials
                             __sql__ = f"SELECT * FROM LMS.Users WHERE User_ID = {uid} AND Password = {pwd};"
                             res = pd.read_sql_query(__sql__, x.engine)
 
+                            # If the user's credentials are correct, it will print the Welcome message along with other options for different functionalities
                             if not res.empty:
                                 os.system('cls')
                                 while True:
