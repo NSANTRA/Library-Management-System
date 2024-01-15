@@ -221,11 +221,15 @@ class System:
     def borrow(self):
         bid = int(input("Enter Book ID: "))
                                                         
-        sql = f"SELECT * FROM LMS.Books;"
+        sql = f"SELECT * FROM LMS.Books WHERE Book_ID = {bid};"
         res = pd.read_sql_query(sql, self.engine)
 
-        if bid in res['Book_ID'].values:
+        if bid in res['Book_ID'].values and res['Available'].values == 1:
             sql = f"INSERT INTO Issues(User_ID, Name, Book_ID, Title, Issue_Date) VALUES({uid}, (SELECT Name FROM LMS.Users WHERE User_ID = {uid}), {bid}, (SELECT Title FROM LMS.Books WHERE Book_ID = {bid}), CURDATE());"
+
+            self.mycursor.execute(sql)
+
+            sql = f"UPDATE Books SET Available = 0 WHERE Book_ID = {bid};"
 
             self.mycursor.execute(sql)
             self.mydb.commit()
@@ -234,7 +238,7 @@ class System:
             time.sleep(.7)
                                                         
         else:
-            print("No such book available!")
+            print("Not available!")
             time.sleep(.7)
 
     # Books Management System Options End
@@ -518,10 +522,10 @@ if __name__ == "__main__":
 
                                                     case 2:
                                                         sql = f"SELECT Issue_ID, Book_ID, Title, Issue_Date FROM LMS.Issues WHERE User_ID = {uid};"
-                                                        res = pd.read_sql_query(sql, x.engine)
+                                                        __res__ = pd.read_sql_query(sql, x.engine)
 
-                                                        if not res.empty:
-                                                            print(res.sort_values(by = 'Issue_Date'))
+                                                        if not __res__.empty:
+                                                            print(__res__.sort_values(by = 'Issue_Date'))
                                                             input("\nPress Enter to continue...")
 
                                                         else:
