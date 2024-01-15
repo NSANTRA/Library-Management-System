@@ -36,7 +36,7 @@ class System:
             self.mycursor.execute("CREATE TABLE IF NOT EXISTS Users (User_ID INT AUTO_INCREMENT PRIMARY KEY, Name VARCHAR(255) NOT NULL, Email VARCHAR(255) NOT NULL, Password CHAR(12) NOT NULL CHECK (CHAR_LENGTH(Password) >= 4))")
             
             # SQL Query for creating a table named Issues to store the Book Issues info.
-            self.mycursor.execute("CREATE TABLE IF NOT EXISTS Issues (Issue_ID INT AUTO_INCREMENT PRIMARY KEY, User_ID INT NOT NULL, Name VARCHAR(255) NOT NULL, Book_ID INT NOT NULL, Title VARCHAR(255) NOT NULL, Issue_Date DATE, FOREIGN KEY (User_ID) REFERENCES Users(User_ID), FOREIGN KEY (Book_ID) REFERENCES Books(Book_ID))")
+            self.mycursor.execute("CREATE TABLE IF NOT EXISTS Issues (Issue_ID INT AUTO_INCREMENT PRIMARY KEY, User_ID INT NOT NULL, Name VARCHAR(255) NOT NULL, Book_ID INT NOT NULL, Title VARCHAR(255) NOT NULL, Issue_Date DATETIME)")
 
             # print("Database and Tables created successfully.")
             self.mydb.commit()
@@ -90,69 +90,72 @@ class System:
                         id = int(input("Search Book ID: "))
 
                         if not res.empty and id in res['Book_ID'].values:
-                            sql = f"SELECT * FROM Books WHERE Book_ID = {id};"
+                            sql = f"SELECT * FROM LMS.Books WHERE Book_ID = {id};"
                             res = pd.read_sql_query(sql, self.engine).sort_values(by = 'Title')
                             print(res)
-                            print()
+                            input("\nPress Enter to continue...")
                         
                         else:
                             print("No records found")
-                            print()
+                            time.sleep(.7)
                     
                     elif b == 2:    # Filter by Title
                         title = input("Search by Title: ")
 
-                        sql = f"SELECT * FROM Books WHERE Title LIKE '%{title}%';"
+                        sql = f"SELECT * FROM LMS.Books WHERE Title LIKE '%{title}%';"
                         res = pd.read_sql_query(sql, self.engine).sort_values(by = 'Title')
 
                         if not res.empty:
-                            print(res)
-                            print()
-                        
+                            print(res)                        
+                            input("\nPress Enter to continue...")
+
                         else:
                             print("No record found")
-                            print()
+                            time.sleep(.7)
                     
                     elif b == 3:    # Filter by Author Name
                         auth = input("Search by Author: ")
 
-                        sql = f"SELECT * FROM Books WHERE Author LIKE '%{auth}%';"
+                        sql = f"SELECT * FROM LMS.Books WHERE Author LIKE '%{auth}%';"
                         res = pd.read_sql_query(sql, self.engine).sort_values(by = 'Title')
 
                         if not res.empty:
                             print(res)
-                            print()
+                            input("\nPress Enter to continue...")
                         
                         else:
                             print("No record found")
-                            print()
+                            time.sleep(.7)
 
                     elif b == 4:    # Exit this function
                         print("Thank you")
+                        time.sleep(.7)
                         break
 
                     else:
                         print("Invalid choice")
-                        print()
+                        time.sleep(.7)
 
             elif a == 3:
                 print("Thank you")
-                print()
+                time.sleep(.7)
                 break
 
             else:
                 print("Invalid choice")
-                print()
+                time.sleep(.7)
 
     def modify(self):
         while True:
             os.system('cls')
-            sql = "SELECT * FROM Lms.Books;"
-            res = pd.read_sql_query(sql, self.engine)
-            
             id = int(input("\nUpdate Book ID: "))
             
+            sql = f"SELECT * FROM Lms.Books WHERE Book_ID = {id};"
+            res = pd.read_sql_query(sql, self.engine)
+            
             if not res.empty and  id in res['Book_ID'].values:
+                print(res)
+                print()
                 a = int(input("\nUpdate:\n1. Title\n2. Author\n3. Back\n\nEnter the choice: "))
 
                 if a == 1:
@@ -166,6 +169,7 @@ class System:
                     
                     print("Updates done successfully.")
                     print()
+                    time.sleep(.7)
                     break
 
                 elif a == 2:
@@ -179,18 +183,22 @@ class System:
 
                     print("Updates done successfully.")
                     print()
+                    time.sleep(.7)
                     break
 
                 elif a == 3:
                     print("Thank you")
+                    time.sleep(.7)
                     break
 
                 else:
                     print("Invalid Choice")
                     print()
+                    time.sleep(.7)
             else:
                 print("No recorded books")
                 print()
+                time.sleep(.7)
                 break
                     
     def delete(self):
@@ -224,7 +232,9 @@ class System:
         sql = f"SELECT * FROM LMS.Books WHERE Book_ID = {bid};"
         res = pd.read_sql_query(sql, self.engine)
 
-        if bid in res['Book_ID'].values and res['Available'].values == 1:
+        # The condition is to check for the book's availability
+        # If 1, the book is available and if 0, the book's not available
+        if not res.empty and res['Available'].values == 1:
             sql = f"INSERT INTO Issues(User_ID, Name, Book_ID, Title, Issue_Date) VALUES({uid}, (SELECT Name FROM LMS.Users WHERE User_ID = {uid}), {bid}, (SELECT Title FROM LMS.Books WHERE Book_ID = {bid}), CURDATE());"
 
             self.mycursor.execute(sql)
@@ -241,6 +251,9 @@ class System:
             print("Not available!")
             time.sleep(.7)
 
+    def ret(self):
+        pass
+
     # Books Management System Options End
             
     # Users Management System Options Start
@@ -250,22 +263,30 @@ class System:
         email = input("Enter Email ID: ")
         pas = input("Password: ")
 
-        sql = "INSERT INTO Users (Name, Email, Password) VALUES (%s, %s, %s);"
-        val = (name, email, pas)
+        if len(pas) >= 4:
+            sql = "INSERT INTO Users (Name, Email, Password) VALUES (%s, %s, %s);"
+            val = (name, email, pas)
 
-        self.mycursor.execute(sql, val)
-        self.mydb.commit()
+            self.mycursor.execute(sql, val)
+            self.mydb.commit()
+
+            print("Successfully registered!")
+            time.sleep(.7)
+        
+        else:
+            print("Password length should be >= 4!")
+            time.sleep(.7)
     
     def ushow(self):
         while True:
             os.system('cls')
             a = int(input("1. Show All Users\n2. Filter\n3. Back\n\nEnter your choice: "))
 
+            sql = "SELECT * FROM LMS.Users;"
+            res = pd.read_sql_query(sql, self.engine).sort_values(by = 'Name')
+            
             match a:
                 case 1:      # Show All Users
-                    sql = "SELECT * FROM LMS.Users;"
-                    res = pd.read_sql_query(sql, self.engine).sort_values(by = 'Name').set_index('User_ID')
-
                     if not res.empty:
                         print(res)
                         input("\nPress Enter to continue...")
@@ -324,6 +345,7 @@ class System:
 
                             case 4:
                                 print("Thank you!")
+                                time.sleep(.7)
                                 break
 
                             case _:
@@ -332,6 +354,7 @@ class System:
 
                 case 3:
                     print("Thank you!")
+                    time.sleep(.7)
                     break
 
                 case _:
@@ -371,22 +394,30 @@ class System:
 
                 case 3:
                     for i in range(3, 0, -1):
+                        os.system('cls')
                         pwd = input("Update Password: ")
                         repeat = input("Re-enter Password: ")
 
-                        if repeat == pwd:
-                            sql = "UPDATE Users SET Password = %s WHERE User_ID = %s;"
-                            val = (pwd, id)
+                        if len(pwd) >= 4:
+                            if repeat == pwd:
+                                sql = "UPDATE Users SET Password = %s WHERE User_ID = %s;"
+                                val = (pwd, id)
 
-                            self.mycursor.execute(sql, val)
-                            self.mydb.commit()
+                                self.mycursor.execute(sql, val)
+                                self.mydb.commit()
 
-                            res = pd.read_sql_query(f"SELECT * FROM LMS.Users WHERE User_ID = {id} AND Password = {pwd}", self.engine)
-                            print("Updated successfully")
-                            break
-                                                                        
+                                res = pd.read_sql_query(f"SELECT * FROM LMS.Users WHERE User_ID = {id} AND Password = {pwd}", self.engine)
+                                print("Updated successfully")
+                                time.sleep(.7)
+                                break
+                                                                            
+                            else:
+                                print(f"Passwords do not match. Try again! {i - 1} chances left!")
+                                time.sleep(.7)
+                        
                         else:
-                            print(f"Passwords do not match. Try again! {i - 1} chances left!")
+                            print("Password length should be >= 4!")
+                            time.sleep(.7)
                                                                 
                 case 4:
                     print("Thank you")
@@ -423,9 +454,10 @@ if __name__ == "__main__":
 
                 if uname == "admin" and pwd == "admin":
                     os.system('cls')
-                    print("Welcome, Administrator!")
-                    print()
                     while True:
+                        os.system('cls')
+                        print("Welcome, Administrator!")
+                        print()
                         a = int(input("1. Library\n2. Show Users\n3. Logout\n\nEnter your choice: "))
                         
                         match a:
@@ -461,25 +493,23 @@ if __name__ == "__main__":
                                             time.sleep(.7)
 
                             case 2:    # For the Users Management Options
-                                os.system('cls')
                                 x.ushow()
-                                os.system('cls')
 
                             case 3:    # LMS System Exit
                                 print("Thank you!")
+                                time.sleep(0.7)
                                 break
 
                             case _:
                                 print("Invalid Choice!")
                                 time.sleep(0.7)
-                                os.system('cls')
 
                 else:
                     print("Wrong credentials")
                     time.sleep(0.7)
-                    os.system('cls')
 
-            case 2:    # User Login
+            # User Login
+            case 2:
                 while True:
                     # For account deletion to directly go to the Register/Login Page
                     flag = False
@@ -489,8 +519,6 @@ if __name__ == "__main__":
                         case 1:
                             # Code for registering a new user
                             x.uadd()
-                            print("Successfully registered!")
-                            time.sleep(0.7)
                         
                         case 2:
                             # Code for user login
