@@ -249,6 +249,7 @@ class System:
                     
                     else:
                         print("No records found.")
+                        time.sleep(.7)
                 
                 case 2:            # Filter Search Results
                     while True:
@@ -264,9 +265,11 @@ class System:
                                     sql = f"SELECT * FROM LMS.Users WHERE User_ID = {id};"
                                     res = pd.read_sql_query(sql, self.engine).sort_values(by = 'Name')
                                     print(res)
+                                    input("\nPress Enter to continue...")
                                 
                                 else:
                                     print("No records found")
+                                    time.sleep(.7)
                             
                             case 2:    # Filter by User Name
                                 name = input("Search User Name: ")
@@ -276,9 +279,11 @@ class System:
 
                                 if not res.empty:
                                     print(res)
+                                    input("\nPress Enter to continue...")
                                 
                                 else:
                                     print("No records found")
+                                    time.sleep(.7)
 
                             case 3:
                                 email = input("Search Email: ")
@@ -288,10 +293,11 @@ class System:
 
                                 if not res.empty:
                                     print(res)
+                                    input("\nPress Enter to continue...")
                                 
                                 else:
                                     print("No records found")
-                                    print()
+                                    time.sleep(.7)
 
                             case 4:
                                 print("Thank you!")
@@ -299,16 +305,15 @@ class System:
 
                             case _:
                                 print("Invalid choice!")
-                                print()
+                                time.sleep(.7)
 
                 case 3:
                     print("Thank you!")
-                    print()
                     break
 
                 case _:
                     print("Invalid choice!")
-                    print()
+                    time.sleep(.7)
 
     def umod(self, id):
         while True:
