@@ -14,6 +14,9 @@ class System:
         # Establishing connection
         self.mydb = conn.connect(host = 'localhost', user = 'root', passwd = pas)
         self.mycursor = self.mydb.cursor()
+
+        # Encoding the passord
+        pas = quote_plus(pas)
         
         # Creating the engine
         self.engine = create_engine(f'mysql+mysqlconnector://root:{pas}@localhost')
@@ -93,13 +96,36 @@ class System:
                         case 2:
                             while True:
                                 os.system('cls')
-                                print("-------------------------SORTING BASED ON TITLE-------------------------")
                                 c = int(input("1. Title\n2. Author\n3. Back\n\nEnter the choice: "))
                                 match c:
                                     case 1:
                                         while True:
                                             os.system('cls')
                                             d = int(input("1. Ascending A-Z\n2. Descending Z-A\n3. Back\n\nEnter the choice: "))
+                                            match d:
+                                                case 1:
+                                                    os.system('cls')
+                                                    print("-------------------------SORTING BASED ON TITLE-------------------------")
+                                                    print(res.sort_values(by = 'Title'))
+                                                    input("\nPress Enter to continue...")
+
+                                                case 2:
+                                                    os.system('cls')
+                                                    print("-------------------------SORTING BASED ON TITLE-------------------------")
+                                                    print(res.sort_values(by = 'Title', ascending = False))
+                                                    input("\nPress Enter to continue...")
+
+                                                case 3:
+                                                    break
+
+                                                case _:
+                                                    print("Invalid choice!")
+                                                    time.sleep(.7)
+
+                                    case 2:
+                                        while True:
+                                            os.system('cls')
+                                            e = int(input("1. Ascending A-Z\n2. Descending Z-A\n3. Back\n\nEnter the choice: "))
                                             match d:
                                                 case 1:
                                                     os.system('cls')
@@ -117,10 +143,6 @@ class System:
                                                 case _:
                                                     print("Invalid choice!")
                                                     time.sleep(.7)
-
-                                    case 2:
-                                        while True:
-                                            os.system('cls')
 
                                     case 3:
                                         break
@@ -722,6 +744,8 @@ if __name__ == "__main__":
 
             case 3:
                 print("Thank you for using our LMS Portal!")
+                # Deletes the System class instance just before exiting the program 
+                del x
                 exit()
 
             case _:
