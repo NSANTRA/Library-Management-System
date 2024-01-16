@@ -69,159 +69,168 @@ class System:
         while True:
             os.system('cls')
             a = int(input("1. Show All Books\n2. Filter\n3. Back\n\nEnter the choice: "))
-
+            match a:
             # Shows all Book Records
-            if a == 1:
-                while True:
-                    os.system('cls')
-                    
-                    sql = "SELECT * FROM LMS.Books;"
-                    res = pd.read_sql_query(sql, self.engine)
-                    
-                    b = int(input("1. Original List\n2. Sort\n3. Back\n\nEnter the choice: "))
-                    match b:
-                        case 1:
-                            os.system('cls')
-                            print("-------------------------BOOKS AVAILABLE ON OUR SHELF-------------------------")
-                            print()
-                                    
-                            if not res.empty:
+                case 1:
+                    while True:
+                        os.system('cls')
+                        
+                        sql = "SELECT * FROM LMS.Books;"
+                        res = pd.read_sql_query(sql, self.engine)
+                        
+                        b = int(input("1. Original List\n2. Sort\n3. Back\n\nEnter the choice: "))
+                        match b:
+                            case 1:
+                                os.system('cls')
+                                print("-------------------------BOOKS AVAILABLE ON OUR SHELF-------------------------")
+                                print()
+                                        
+                                if not res.empty:
+                                    print(res)
+                                    input("\nPress Enter to continue...")
+                                
+                                else:
+                                    print("No records found")
+                                    time.sleep(.7)
+
+                            case 2:
+                                while True:
+                                    os.system('cls')
+                                    c = int(input("1. Title\n2. Author\n3. Back\n\nEnter the choice: "))
+                                    match c:
+                                        # Sort according ot Title
+                                        case 1:
+                                            while True:
+                                                os.system('cls')
+                                                d = int(input("1. Ascending A-Z\n2. Descending Z-A\n3. Back\n\nEnter the choice: "))
+                                                match d:
+                                                    case 1:
+                                                        os.system('cls')
+                                                        print("----------------------------SORTING BASED ON TITLE----------------------------")
+                                                        print(res.sort_values(by = 'Title'))
+                                                        input("\nPress Enter to continue...")
+
+                                                    case 2:
+                                                        os.system('cls')
+                                                        print("-------------------------SORTING BASED ON TITLE-------------------------")
+                                                        print(res.sort_values(by = 'Title', ascending = False))
+                                                        input("\nPress Enter to continue...")
+
+                                                    case 3:
+                                                        break
+
+                                                    case _:
+                                                        print("Invalid choice!")
+                                                        time.sleep(.7)
+
+                                        # Sort according ot Author
+                                        case 2:
+                                            while True:
+                                                os.system('cls')
+                                                e = int(input("1. Ascending A-Z\n2. Descending Z-A\n3. Back\n\nEnter the choice: "))
+                                                match e:
+                                                    case 1:
+                                                        os.system('cls')
+                                                        print("----------------------------SORTING BASED ON AUTHOR----------------------------")
+                                                        print(res.sort_values(by = 'Author'))
+                                                        input("\nPress Enter to continue...")
+
+                                                    case 2:
+                                                        os.system('cls')
+                                                        print("----------------------------SORTING BASED ON AUTHOR----------------------------")
+                                                        print(res.sort_values(by = 'Author', ascending = False))
+                                                        input("\nPress Enter to continue...")
+
+                                                    case 3:
+                                                        break
+
+                                                    case _:
+                                                        print("Invalid choice!")
+                                                        time.sleep(.7)
+
+                                        case 3:
+                                            break
+
+                                        case _:
+                                            print("Invalid choice!")
+                                            time.sleep(.7)
+
+                            case 3:
+                                break
+
+                            case _:
+                                print("Invalid choice!")
+                                time.sleep(.7)
+                
+                # Filters by conditions
+                case 2:
+                    while True:
+                        os.system('cls')
+                        print("Filter by:")
+                        b = int(input("1. Book ID\n2. Title\n3. Author\n4. Back\n\nEnter the choice: "))
+                        
+                        # Filter by Book ID
+                        if b == 1:
+                            id = int(input("Search Book ID: "))
+
+                            if not res.empty and id in res['Book_ID'].values:
+                                sql = f"SELECT * FROM LMS.Books WHERE Book_ID = {id};"
+                                res = pd.read_sql_query(sql, self.engine)
                                 print(res)
                                 input("\nPress Enter to continue...")
                             
                             else:
                                 print("No records found")
                                 time.sleep(.7)
+                        
+                        # Filter by Title
+                        elif b == 2:
+                            title = input("Search by Title: ")
 
-                        case 2:
-                            while True:
-                                os.system('cls')
-                                c = int(input("1. Title\n2. Author\n3. Back\n\nEnter the choice: "))
-                                match c:
-                                    case 1:
-                                        while True:
-                                            os.system('cls')
-                                            d = int(input("1. Ascending A-Z\n2. Descending Z-A\n3. Back\n\nEnter the choice: "))
-                                            match d:
-                                                case 1:
-                                                    os.system('cls')
-                                                    print("-------------------------SORTING BASED ON TITLE-------------------------")
-                                                    print(res.sort_values(by = 'Title'))
-                                                    input("\nPress Enter to continue...")
+                            sql = f"SELECT * FROM LMS.Books WHERE Title LIKE '%{title}%';"
+                            res = pd.read_sql_query(sql, self.engine)
 
-                                                case 2:
-                                                    os.system('cls')
-                                                    print("-------------------------SORTING BASED ON TITLE-------------------------")
-                                                    print(res.sort_values(by = 'Title', ascending = False))
-                                                    input("\nPress Enter to continue...")
+                            if not res.empty:
+                                print(res)                        
+                                input("\nPress Enter to continue...")
 
-                                                case 3:
-                                                    break
+                            else:
+                                print("No record found")
+                                time.sleep(.7)
+                        
+                        # Filter by Author Name
+                        elif b == 3:
+                            auth = input("Search by Author: ")
 
-                                                case _:
-                                                    print("Invalid choice!")
-                                                    time.sleep(.7)
+                            sql = f"SELECT * FROM LMS.Books WHERE Author LIKE '%{auth}%';"
+                            res = pd.read_sql_query(sql, self.engine)
 
-                                    case 2:
-                                        while True:
-                                            os.system('cls')
-                                            e = int(input("1. Ascending A-Z\n2. Descending Z-A\n3. Back\n\nEnter the choice: "))
-                                            match d:
-                                                case 1:
-                                                    os.system('cls')
-                                                    print(res.sort_values(by = 'Title'))
-                                                    input("\nPress Enter to continue...")
+                            if not res.empty:
+                                print(res)
+                                input("\nPress Enter to continue...")
+                            
+                            else:
+                                print("No record found")
+                                time.sleep(.7)
 
-                                                case 2:
-                                                    os.system('cls')
-                                                    print(res.sort_values(by = 'Title', ascending = False))
-                                                    input("\nPress Enter to continue...")
-
-                                                case 3:
-                                                    break
-
-                                                case _:
-                                                    print("Invalid choice!")
-                                                    time.sleep(.7)
-
-                                    case 3:
-                                        break
-
-                                    case _:
-                                        print("Invalid choice!")
-                                        time.sleep(.7)
-
-                        case 3:
+                        # Exit this function
+                        elif b == 4:
+                            print("Thank you")
+                            time.sleep(.7)
                             break
 
-                        case _:
-                            print("Invalid choice!")
-                            time.sleep(.7)
-
-            elif a == 2:    # Filters by conditions
-                while True:
-                    os.system('cls')
-                    print("Filter by:")
-                    b = int(input("1. Book ID\n2. Title\n3. Author\n4. Back\n\nEnter the choice: "))
-
-                    if b == 1:      # Filter by Book ID
-                        id = int(input("Search Book ID: "))
-
-                        if not res.empty and id in res['Book_ID'].values:
-                            sql = f"SELECT * FROM LMS.Books WHERE Book_ID = {id};"
-                            res = pd.read_sql_query(sql, self.engine)
-                            print(res)
-                            input("\nPress Enter to continue...")
-                        
                         else:
-                            print("No records found")
-                            time.sleep(.7)
-                    
-                    elif b == 2:    # Filter by Title
-                        title = input("Search by Title: ")
-
-                        sql = f"SELECT * FROM LMS.Books WHERE Title LIKE '%{title}%';"
-                        res = pd.read_sql_query(sql, self.engine)
-
-                        if not res.empty:
-                            print(res)                        
-                            input("\nPress Enter to continue...")
-
-                        else:
-                            print("No record found")
-                            time.sleep(.7)
-                    
-                    elif b == 3:    # Filter by Author Name
-                        auth = input("Search by Author: ")
-
-                        sql = f"SELECT * FROM LMS.Books WHERE Author LIKE '%{auth}%';"
-                        res = pd.read_sql_query(sql, self.engine)
-
-                        if not res.empty:
-                            print(res)
-                            input("\nPress Enter to continue...")
-                        
-                        else:
-                            print("No record found")
+                            print("Invalid choice")
                             time.sleep(.7)
 
-                    elif b == 4:    # Exit this function
-                        print("Thank you")
-                        time.sleep(.7)
-                        break
+                case 3:
+                    print("Thank you")
+                    time.sleep(.7)
+                    break
 
-                    else:
-                        print("Invalid choice")
-                        time.sleep(.7)
-
-            elif a == 3:
-                print("Thank you")
-                time.sleep(.7)
-                break
-
-            else:
-                print("Invalid choice")
-                time.sleep(.7)
+                case _:
+                    print("Invalid choice")
+                    time.sleep(.7)
 
     def modify(self):
         while True:
@@ -235,44 +244,44 @@ class System:
                 print(res)
                 print()
                 a = int(input("\nUpdate:\n1. Title\n2. Author\n3. Back\n\nEnter the choice: "))
+                match a:
+                    case 1:
+                        new = input("Update Title: ")
 
-                if a == 1:
-                    new = input("Update Title: ")
+                        sql = "UPDATE Books SET Title = %s WHERE Book_ID = %s;"
+                        val = (new, id)
 
-                    sql = "UPDATE Books SET Title = %s WHERE Book_ID = %s;"
-                    val = (new, id)
+                        self.mycursor.execute(sql, val)
+                        self.mydb.commit()
+                        
+                        print("Updates done successfully.")
+                        print()
+                        time.sleep(.7)
+                        break
 
-                    self.mycursor.execute(sql, val)
-                    self.mydb.commit()
-                    
-                    print("Updates done successfully.")
-                    print()
-                    time.sleep(.7)
-                    break
+                    case 2:
+                        new = input("Update Author: ")
 
-                elif a == 2:
-                    new = input("Update Author: ")
+                        sql = "UPDATE Books SET Author = %s WHERE Book_ID = %s;"
+                        val = (new, id)
 
-                    sql = "UPDATE Books SET Author = %s WHERE Book_ID = %s;"
-                    val = (new, id)
+                        self.mycursor.execute(sql, val)
+                        self.mydb.commit()
 
-                    self.mycursor.execute(sql, val)
-                    self.mydb.commit()
+                        print("Updates done successfully.")
+                        print()
+                        time.sleep(.7)
+                        break
 
-                    print("Updates done successfully.")
-                    print()
-                    time.sleep(.7)
-                    break
+                    case 3:
+                        print("Thank you")
+                        time.sleep(.7)
+                        break
 
-                elif a == 3:
-                    print("Thank you")
-                    time.sleep(.7)
-                    break
-
-                else:
-                    print("Invalid Choice")
-                    print()
-                    time.sleep(.7)
+                    case _:
+                        print("Invalid Choice")
+                        print()
+                        time.sleep(.7)
             else:
                 print("No recorded books")
                 print()
@@ -404,7 +413,7 @@ class System:
                     while True:
                         os.system('cls')
                         print("Filter by:")
-                        b = int(input("1. User ID\n2. Name\n3. Email\n4. Back\n\nEnter the choice: "))
+                        b = int(input("1. User ID\n2. Name\n3. Email\n4. Availability\n5. Back\n\nEnter the choice: "))
                         
                         match b:
                             case 1:      # Filter by User ID
@@ -449,6 +458,18 @@ class System:
                                     time.sleep(.7)
 
                             case 4:
+                                sql = f"SELECT * FROM LMS.Users WHERE Available = 1;"
+                                res = pd.read_sql_query(sql, self.engine)
+
+                                if not res.empty:
+                                    print(res)
+                                    input("\nPress Enter to continue...")
+                                
+                                else:
+                                    print("No records found")
+                                    time.sleep(.7)
+
+                            case 5:
                                 print("Thank you!")
                                 time.sleep(.7)
                                 break
