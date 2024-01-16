@@ -67,18 +67,33 @@ class System:
             os.system('cls')
             a = int(input("1. Show All Books\n2. Filter\n3. Back\n\nEnter the choice: "))
 
-            if a == 1:      # Shows all Book records
-                sql = "SELECT * FROM LMS.Books;"
-                res = pd.read_sql_query(sql, self.engine)
-                
-                if not res.empty:
-                    print(res)
-                    input("\nPress Enter to continue...")
-                    # input()
-                
-                else:
-                    print("No records found")
-                    time.sleep(.7)
+            # Shows all Book Records
+            if a == 1:
+                while True:
+                    b = int(input("1. Original List\n2. Sort\n3. Back\n\nEnter the choice: "))
+                    match b:
+                        case 1:
+                            os.system('cls')
+                            sql = "SELECT * FROM LMS.Books;"
+                            res = pd.read_sql_query(sql, self.engine)
+                            
+                            if not res.empty:
+                                print(res)
+                                input("\nPress Enter to continue...")
+                            
+                            else:
+                                print("No records found")
+                                time.sleep(.7)
+
+                        case 2:
+                            pass
+
+                        case 3:
+                            break
+
+                        case _:
+                            print("Invalid choice!")
+                            time.sleep(.7)
 
             elif a == 2:    # Filters by conditions
                 while True:
