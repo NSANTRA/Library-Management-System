@@ -2,21 +2,21 @@ import mysql.connector as conn
 import pandas as pd
 from sqlalchemy import create_engine
 from urllib.parse import quote_plus
-import keyboard
+# import keyboard
 import time
 import os
 
 class System:
     def __init__(self):
+        # Password for the MySQL Server Connection
+        pas = "NeeSan@1234"
+
         # Establishing connection
-        self.mydb = conn.connect(host='localhost', user='root', passwd='NeeSan@1234')
+        self.mydb = conn.connect(host = 'localhost', user = 'root', passwd = pas)
         self.mycursor = self.mydb.cursor()
-
-        # URL encoding the password
-        password_encoded = quote_plus('NeeSan@1234')
-
+        
         # Creating the engine
-        self.engine = create_engine(f'mysql+mysqlconnector://root:{password_encoded}@localhost')
+        self.engine = create_engine(f'mysql+mysqlconnector://root:{pas}@localhost')
 
         # Database initialization
         self.init_database()
@@ -70,13 +70,18 @@ class System:
             # Shows all Book Records
             if a == 1:
                 while True:
+                    os.system('cls')
+                    
+                    sql = "SELECT * FROM LMS.Books;"
+                    res = pd.read_sql_query(sql, self.engine)
+                    
                     b = int(input("1. Original List\n2. Sort\n3. Back\n\nEnter the choice: "))
                     match b:
                         case 1:
                             os.system('cls')
-                            sql = "SELECT * FROM LMS.Books;"
-                            res = pd.read_sql_query(sql, self.engine)
-                            
+                            print("-------------------------BOOKS AVAILABLE ON OUR SHELF-------------------------")
+                            print()
+                                    
                             if not res.empty:
                                 print(res)
                                 input("\nPress Enter to continue...")
@@ -86,7 +91,43 @@ class System:
                                 time.sleep(.7)
 
                         case 2:
-                            pass
+                            while True:
+                                os.system('cls')
+                                print("-------------------------SORTING BASED ON TITLE-------------------------")
+                                c = int(input("1. Title\n2. Author\n3. Back\n\nEnter the choice: "))
+                                match c:
+                                    case 1:
+                                        while True:
+                                            os.system('cls')
+                                            d = int(input("1. Ascending A-Z\n2. Descending Z-A\n3. Back\n\nEnter the choice: "))
+                                            match d:
+                                                case 1:
+                                                    os.system('cls')
+                                                    print(res.sort_values(by = 'Title'))
+                                                    input("\nPress Enter to continue...")
+
+                                                case 2:
+                                                    os.system('cls')
+                                                    print(res.sort_values(by = 'Title', ascending = False))
+                                                    input("\nPress Enter to continue...")
+
+                                                case 3:
+                                                    break
+
+                                                case _:
+                                                    print("Invalid choice!")
+                                                    time.sleep(.7)
+
+                                    case 2:
+                                        while True:
+                                            os.system('cls')
+
+                                    case 3:
+                                        break
+
+                                    case _:
+                                        print("Invalid choice!")
+                                        time.sleep(.7)
 
                         case 3:
                             break
