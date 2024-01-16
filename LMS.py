@@ -251,8 +251,35 @@ class System:
             print("Not available!")
             time.sleep(.7)
 
-    def ret(self):
-        pass
+    def ret(self, id):
+        sql = f"SELECT Issue_ID, Book_ID, Title, Issue_Date FROM LMS.Issues WHERE User_ID = {id};"
+        res = pd.read_sql_query(sql, self.engine)
+
+        if not res.empty:
+            print(res)
+            print()
+
+            bid = int(input("Return Book ID: "))
+
+            if bid in res['Book_ID'].values:
+                sql1 = f"DELETE FROM Issues WHERE User_ID = {id} AND Book_ID = {bid};"
+                sql2 = f"UPDATE Books SET Available = 1 WHERE Book_ID = {bid};"
+
+                self.mycursor.execute(sql1)
+                self.mycursor.execute(sql2)
+
+                self.mydb.commit()
+
+                print("Book(s) returned successfully!")
+                time.sleep(.7)
+
+            else:
+                print("Invalid Book ID!")
+                time.sleep(.7)
+
+        else:
+            print("No borrowed books!")
+            time.sleep(.7)
 
     # Books Management System Options End
             
@@ -564,7 +591,7 @@ if __name__ == "__main__":
                                                        x.borrow()
 
                                                     case 4:
-                                                        pass
+                                                        x.ret(uid)
 
                                                     case 5:
                                                         break
