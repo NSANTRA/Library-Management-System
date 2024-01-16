@@ -69,7 +69,7 @@ class System:
 
             if a == 1:      # Shows all Book records
                 sql = "SELECT * FROM LMS.Books;"
-                res = pd.read_sql_query(sql, self.engine).sort_values(by = 'Title')
+                res = pd.read_sql_query(sql, self.engine)
                 
                 if not res.empty:
                     print(res)
@@ -91,7 +91,7 @@ class System:
 
                         if not res.empty and id in res['Book_ID'].values:
                             sql = f"SELECT * FROM LMS.Books WHERE Book_ID = {id};"
-                            res = pd.read_sql_query(sql, self.engine).sort_values(by = 'Title')
+                            res = pd.read_sql_query(sql, self.engine)
                             print(res)
                             input("\nPress Enter to continue...")
                         
@@ -103,7 +103,7 @@ class System:
                         title = input("Search by Title: ")
 
                         sql = f"SELECT * FROM LMS.Books WHERE Title LIKE '%{title}%';"
-                        res = pd.read_sql_query(sql, self.engine).sort_values(by = 'Title')
+                        res = pd.read_sql_query(sql, self.engine)
 
                         if not res.empty:
                             print(res)                        
@@ -117,7 +117,7 @@ class System:
                         auth = input("Search by Author: ")
 
                         sql = f"SELECT * FROM LMS.Books WHERE Author LIKE '%{auth}%';"
-                        res = pd.read_sql_query(sql, self.engine).sort_values(by = 'Title')
+                        res = pd.read_sql_query(sql, self.engine)
 
                         if not res.empty:
                             print(res)
@@ -310,7 +310,7 @@ class System:
             a = int(input("1. Show All Users\n2. Filter\n3. Back\n\nEnter your choice: "))
 
             sql = "SELECT * FROM LMS.Users;"
-            res = pd.read_sql_query(sql, self.engine).sort_values(by = 'Name')
+            res = pd.read_sql_query(sql, self.engine)
             
             match a:
                 case 1:      # Show All Users
@@ -334,7 +334,7 @@ class System:
 
                                 if not res.empty and id in res['User_ID'].values:
                                     sql = f"SELECT * FROM LMS.Users WHERE User_ID = {id};"
-                                    res = pd.read_sql_query(sql, self.engine).sort_values(by = 'Name')
+                                    res = pd.read_sql_query(sql, self.engine)
                                     print(res)
                                     input("\nPress Enter to continue...")
                                 
@@ -346,7 +346,7 @@ class System:
                                 name = input("Search User Name: ")
 
                                 sql = f"SELECT * FROM LMS.Users WHERE Name LIKE '%{name}%';"
-                                res = pd.read_sql_query(sql, self.engine).sort_values(by = 'Name')
+                                res = pd.read_sql_query(sql, self.engine)
 
                                 if not res.empty:
                                     print(res)
@@ -360,7 +360,7 @@ class System:
                                 email = input("Search Email: ")
 
                                 sql = f"SELECT * FROM LMS.Users WHERE Email LIKE '%{email}%';"
-                                res = pd.read_sql_query(sql, self.engine).sort_values(by = 'Name')
+                                res = pd.read_sql_query(sql, self.engine)
 
                                 if not res.empty:
                                     print(res)
@@ -580,7 +580,7 @@ if __name__ == "__main__":
                                                         __res__ = pd.read_sql_query(sql, x.engine)
 
                                                         if not __res__.empty:
-                                                            print(__res__.sort_values(by = 'Issue_Date'))
+                                                            print(__res__)
                                                             input("\nPress Enter to continue...")
 
                                                         else:
