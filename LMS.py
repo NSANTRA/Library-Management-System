@@ -167,61 +167,78 @@ class System:
                     while True:
                         os.system('cls')
                         print("Filter by:")
-                        b = int(input("1. Book ID\n2. Title\n3. Author\n4. Back\n\nEnter the choice: "))
-                        
-                        # Filter by Book ID
-                        if b == 1:
-                            id = int(input("Search Book ID: "))
+                        b = int(input("1. Book ID\n2. Title\n3. Author\n4. Available\n5. Back\n\nEnter the choice: "))
+                        match b:
+                            # Filter by Book ID
+                            case 1:
+                                id = int(input("Search Book ID: "))
+                                os.system('cls')
 
-                            if not res.empty and id in res['Book_ID'].values:
-                                sql = f"SELECT * FROM LMS.Books WHERE Book_ID = {id};"
+                                if not res.empty and id in res['Book_ID'].values:
+                                    sql = f"SELECT * FROM LMS.Books WHERE Book_ID = {id};"
+                                    res = pd.read_sql_query(sql, self.engine)
+                                    print(res)
+                                    input("\nPress Enter to continue...")
+                                
+                                else:
+                                    print("No records found")
+                                    time.sleep(.7)
+                            
+                            # Filter by Title
+                            case 2:
+                                title = input("Search by Title: ")
+                                os.system('cls')
+
+                                sql = f"SELECT * FROM LMS.Books WHERE Title LIKE '%{title}%';"
                                 res = pd.read_sql_query(sql, self.engine)
-                                print(res)
-                                input("\nPress Enter to continue...")
+
+                                if not res.empty:
+                                    print(res)                        
+                                    input("\nPress Enter to continue...")
+
+                                else:
+                                    print("No record found")
+                                    time.sleep(.7)
                             
-                            else:
-                                print("No records found")
-                                time.sleep(.7)
-                        
-                        # Filter by Title
-                        elif b == 2:
-                            title = input("Search by Title: ")
+                            # Filter by Author Name
+                            case 3:
+                                auth = input("Search by Author: ")
+                                os.system('cls')
 
-                            sql = f"SELECT * FROM LMS.Books WHERE Title LIKE '%{title}%';"
-                            res = pd.read_sql_query(sql, self.engine)
+                                sql = f"SELECT * FROM LMS.Books WHERE Author LIKE '%{auth}%';"
+                                res = pd.read_sql_query(sql, self.engine)
 
-                            if not res.empty:
-                                print(res)                        
-                                input("\nPress Enter to continue...")
-
-                            else:
-                                print("No record found")
-                                time.sleep(.7)
-                        
-                        # Filter by Author Name
-                        elif b == 3:
-                            auth = input("Search by Author: ")
-
-                            sql = f"SELECT * FROM LMS.Books WHERE Author LIKE '%{auth}%';"
-                            res = pd.read_sql_query(sql, self.engine)
-
-                            if not res.empty:
-                                print(res)
-                                input("\nPress Enter to continue...")
+                                if not res.empty:
+                                    print(res)
+                                    input("\nPress Enter to continue...")
+                                
+                                else:
+                                    print("No record found")
+                                    time.sleep(.7)
                             
-                            else:
-                                print("No record found")
+                            # Filter by the Availability status (1)
+                            case 4:
+                                os.system('cls')
+                                sql = f"SELECT * FROM LMS.Books WHERE Available = 1;"
+                                res = pd.read_sql_query(sql, self.engine)
+
+                                if not res.empty:
+                                    print(res)
+                                    input("\nPress Enter to continue...")
+                                
+                                else:
+                                    print("No records found")
+                                    time.sleep(.7)
+
+                            # Exit this function
+                            case 5:
+                                print("Thank you")
                                 time.sleep(.7)
+                                break
 
-                        # Exit this function
-                        elif b == 4:
-                            print("Thank you")
-                            time.sleep(.7)
-                            break
-
-                        else:
-                            print("Invalid choice")
-                            time.sleep(.7)
+                            case _:
+                                print("Invalid choice")
+                                time.sleep(.7)
 
                 case 3:
                     print("Thank you")
@@ -413,7 +430,7 @@ class System:
                     while True:
                         os.system('cls')
                         print("Filter by:")
-                        b = int(input("1. User ID\n2. Name\n3. Email\n4. Availability\n5. Back\n\nEnter the choice: "))
+                        b = int(input("1. User ID\n2. Name\n3. Email\n4. Back\n\nEnter the choice: "))
                         
                         match b:
                             case 1:      # Filter by User ID
@@ -458,18 +475,6 @@ class System:
                                     time.sleep(.7)
 
                             case 4:
-                                sql = f"SELECT * FROM LMS.Users WHERE Available = 1;"
-                                res = pd.read_sql_query(sql, self.engine)
-
-                                if not res.empty:
-                                    print(res)
-                                    input("\nPress Enter to continue...")
-                                
-                                else:
-                                    print("No records found")
-                                    time.sleep(.7)
-
-                            case 5:
                                 print("Thank you!")
                                 time.sleep(.7)
                                 break
