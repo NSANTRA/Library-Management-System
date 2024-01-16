@@ -15,7 +15,7 @@ class System:
         self.mydb = conn.connect(host = 'localhost', user = 'root', passwd = pas)
         self.mycursor = self.mydb.cursor()
 
-        # Encoding the passord
+        # Encoding the password
         pas = quote_plus(pas)
         
         # Creating the engine
@@ -26,26 +26,33 @@ class System:
 
     def init_database(self):
         if self.mydb.is_connected():
-            # SQL Query for creating a database named LMS
-            self.mycursor.execute("CREATE DATABASE IF NOT EXISTS LMS")
-            
-            # SQL Query for using the above-created database (LMS)
-            self.mycursor.execute("USE LMS")
-            
-            # SQL Query for creating a table named Books to store all the books info.
-            self.mycursor.execute("CREATE TABLE IF NOT EXISTS Books (Book_ID INT AUTO_INCREMENT PRIMARY KEY, Title VARCHAR(255) NOT NULL, Author VARCHAR(255) NOT NULL, Available BOOLEAN NOT NULL DEFAULT 1)")
-            
-            # SQL Query for creating a table named Users a.k.a Customers to store the users info.
-            self.mycursor.execute("CREATE TABLE IF NOT EXISTS Users (User_ID INT AUTO_INCREMENT PRIMARY KEY, Name VARCHAR(255) NOT NULL, Email VARCHAR(255) NOT NULL, Password CHAR(12) NOT NULL CHECK (CHAR_LENGTH(Password) >= 4))")
-            
-            # SQL Query for creating a table named Issues to store the Book Issues info.
-            self.mycursor.execute("CREATE TABLE IF NOT EXISTS Issues (Issue_ID INT AUTO_INCREMENT PRIMARY KEY, User_ID INT NOT NULL, Name VARCHAR(255) NOT NULL, Book_ID INT NOT NULL, Title VARCHAR(255) NOT NULL, Issue_Date DATETIME)")
+            try:
+                # Create database if not exists
+                self.mycursor.execute("CREATE DATABASE IF NOT EXISTS LMS")
 
-            # print("Database and Tables created successfully.")
-            self.mydb.commit()
-        
+                # Use the created database
+                self.mycursor.execute("USE LMS")
+
+                # Create Books table
+                self.mycursor.execute("CREATE TABLE IF NOT EXISTS Books (Book_ID INT AUTO_INCREMENT PRIMARY KEY, Title VARCHAR(255) NOT NULL, Author VARCHAR(255) NOT NULL, Available BOOLEAN NOT NULL DEFAULT 1, INDEX (Title))")
+
+                # Create Users table
+                self.mycursor.execute("CREATE TABLE IF NOT EXISTS Users (User_ID INT AUTO_INCREMENT PRIMARY KEY, Name VARCHAR(255) NOT NULL, Email VARCHAR(255) NOT NULL, Password CHAR(12) NOT NULL CHECK (CHAR_LENGTH(Password) >= 4), INDEX (Email))")
+
+                # Create Issues table
+                self.mycursor.execute("CREATE TABLE IF NOT EXISTS Issues (Issue_ID INT AUTO_INCREMENT PRIMARY KEY, User_ID INT NOT NULL, Name VARCHAR(255) NOT NULL, Book_ID INT NOT NULL, Title VARCHAR(255) NOT NULL, Issue_Date DATETIME, FOREIGN KEY (User_ID) REFERENCES Users(User_ID), FOREIGN KEY (Book_ID) REFERENCES Books(Book_ID))")
+
+                # Commit changes
+                self.mydb.commit()
+                print("Database and Tables created successfully.")
+                time.sleep(2)
+
+            except Exception as e:
+                print(f"Error during database initialization: {e}")
+
         else:
             print("Connection Failure")
+
 
     # Books Management System Options Start
 
@@ -433,7 +440,8 @@ class System:
                         b = int(input("1. User ID\n2. Name\n3. Email\n4. Back\n\nEnter the choice: "))
                         
                         match b:
-                            case 1:      # Filter by User ID
+                            # Filter by User ID
+                            case 1:
                                 id = int(input("Search User ID: "))
 
                                 if not res.empty and id in res['User_ID'].values:
@@ -446,7 +454,8 @@ class System:
                                     print("No records found")
                                     time.sleep(.7)
                             
-                            case 2:    # Filter by User Name
+                            # Filter by User Name
+                            case 2:
                                 name = input("Search User Name: ")
 
                                 sql = f"SELECT * FROM LMS.Users WHERE Name LIKE '%{name}%';"
@@ -460,6 +469,7 @@ class System:
                                     print("No records found")
                                     time.sleep(.7)
 
+                            # Filter by Email
                             case 3:
                                 email = input("Search Email: ")
 
@@ -492,6 +502,7 @@ class System:
                     print("Invalid choice!")
                     time.sleep(.7)
 
+    # User information updation/modification
     def umod(self, id):
         while True:
             os.system('cls')
@@ -500,6 +511,7 @@ class System:
             __sql__ = f"SELECT * FROM LMS.Users WHERE User_ID = {id};"
 
             match a:
+                # Name updation
                 case 1:                                                                    
                     sql = "UPDATE Users SET Name = %s WHERE User_ID = %s;"
                     val = (input("Update Name: "), id)
@@ -512,6 +524,7 @@ class System:
                     res = pd.read_sql_query(__sql__, self.engine)
                     time.sleep(0.7)
 
+                # Email updation
                 case 2:
                     sql = "UPDATE Users SET Email = %s WHERE User_ID = %s;"
                     val = (input("Update Email: "), id)
@@ -523,6 +536,7 @@ class System:
                     print("Updated successfully")
                     time.sleep(.7)
 
+                # Password updation
                 case 3:
                     for i in range(3, 0, -1):
                         os.system('cls')
@@ -560,12 +574,12 @@ class System:
                     time.sleep(.7)
 
             return res
-
+        
+    # User account deletion
     def udel(self, id):
-        sql = "DELETE FROM Users WHERE User_ID = %s;"
-        val = (id)
+        sql = f"DELETE FROM Users WHERE User_ID = {id};"
 
-        self.mycursor.execute(sql, val)
+        self.mycursor.execute(sql)
         self.mydb.commit()
 
     # Users Management System Options End
@@ -579,7 +593,10 @@ if __name__ == "__main__":
         print("--------------------Welcome to The Library Management System--------------------")
         a = int(input("1. Admin Login\n2. User Login\n3. Exit\n\nEnter the choice: "))
         match a:
-            case 1:     # Admin Login
+            # Admin Login
+            # Username: admin
+            # Password: admin
+            case 1:
                 uname = input("Username: ")
                 pwd = input("Password: ")
 
@@ -652,11 +669,11 @@ if __name__ == "__main__":
                             x.uadd()
                         
                         case 2:
-                            # Code for user login
+                            # Code for reading user login
                             uid = input("User ID: ")
                             pwd = input("Password: ")
 
-                            # Query the database to check the user's credentials
+                            # Query the database for validation of user login credentials
                             __sql__ = f"SELECT * FROM LMS.Users WHERE User_ID = {uid} AND Password = {pwd};"
                             res = pd.read_sql_query(__sql__, x.engine)
 
@@ -666,6 +683,7 @@ if __name__ == "__main__":
                                 while True:
                                     os.system('cls')
                                     
+                                    # The main interface after the user login starts
                                     print(f"Welcome, {res['Name'].values}")
                                     print()
 
@@ -722,6 +740,7 @@ if __name__ == "__main__":
                                                         res = x.umod(uid)
 
                                                     case 3:
+                                                        # Asking for confirmation of deletion of account
                                                         c = input("Do you want to remove your account? (Y/N): ")
 
                                                         if c == 'Y' or c == 'y':
