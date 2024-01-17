@@ -6,6 +6,7 @@ from urllib.parse import quote_plus
 import time
 import os
 
+# Class Start
 class System:
     def __init__(self):
         # Password for the MySQL Server Connection
@@ -583,6 +584,7 @@ class System:
         self.mydb.commit()
 
     # Users Management System Options End
+# Class End
 
 if __name__ == "__main__":
     os.system('cls')
