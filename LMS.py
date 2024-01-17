@@ -586,6 +586,7 @@ class System:
     # Users Management System Options End
 # Class End
 
+# Main Function Start
 if __name__ == "__main__":
     os.system('cls')
     x = System()
@@ -798,3 +799,4 @@ if __name__ == "__main__":
             case _:
                 print("Invalid choice!")
                 time.sleep(0.7)
+# Main function End
