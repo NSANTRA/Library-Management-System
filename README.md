@@ -8,7 +8,7 @@ This is a sample command-line-based LMS built using Python. It allows users to m
 Prerequisites
 1. Python 3.x (https://www.python.org/downloads/)
 2. MySQL Server (https://dev.mysql.com/downloads/installer/)
-3. mysql-connector-python and pandas libraries (install using pip)
+3. mysql-connector-python, pandas, sqlalchemy, and urllib.parse libraries (install using pip)
 e.g. pip install [library_name]
 
 Setup

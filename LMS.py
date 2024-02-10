@@ -2,7 +2,6 @@ import mysql.connector as conn
 import pandas as pd
 from sqlalchemy import create_engine
 from urllib.parse import quote_plus
-# import keyboard
 import time
 import os
 
@@ -776,7 +775,8 @@ if __name__ == "__main__":
                                         print("Thank you for using our LMS Portal!")
                                         time.sleep(.7)
                                         break
-
+                            
+                            # In case the user enters the wrong credentials.
                             else:
                                 print("Wrong credentials!")
                                 time.sleep(0.7)
