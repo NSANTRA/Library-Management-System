@@ -10,7 +10,7 @@ import os
 class System:
     def __init__(self):
         # Password for the MySQL Server Connection
-        pas = "NeeSan@1234"
+        pas = "<your_mysql_password>"
 
         # Establishing connection
         self.mydb = conn.connect(host = 'localhost', user = 'root', passwd = pas)
