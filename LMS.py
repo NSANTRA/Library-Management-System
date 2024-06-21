@@ -9,10 +9,11 @@ import os
 class System:
     def __init__(self):
         # Password for the MySQL Server Connection
-        pas = "NeeSan@1234"
+        usr = input("Enter your MySQL username: ")
+        pas = input("Enter your MySQL password: ")
 
         # Establishing connection
-        self.mydb = conn.connect(host = 'localhost', user = 'root', passwd = pas)
+        self.mydb = conn.connect(host = 'localhost', user = usr, passwd = pas)
         self.mycursor = self.mydb.cursor()
 
         # Encoding the password
@@ -60,9 +61,9 @@ class System:
         bname = input("Enter Title: ")
         authname = input("Enter Author Name: ")
 
-        no = int(input("Number of copies: "))
+        num = int(input("Number of copies: "))
 
-        for i in range(no):
+        for i in range(num):
             sql = "INSERT INTO Books (Title, Author) VALUES (%s, %s)"
             val = (bname, authname)
 
@@ -408,8 +409,12 @@ class System:
             self.mycursor.execute(sql, val)
             self.mydb.commit()
 
+            res = pd.read_sql_query(f"SELECT User_ID FROM LMS.Users WHERE Name = '{name}';", self.engine)
+
             print("Successfully registered!")
-            time.sleep(.7)
+            # time.sleep(.7)
+            print(f"Your User ID is {res['User_ID'].values}")
+            input("Press Enter to Continue...")
         
         else:
             print("Password length should be >= 4!")
@@ -776,7 +781,7 @@ if __name__ == "__main__":
                                         time.sleep(.7)
                                         break
                             
-                            # In case the user enters the wrong credentials.
+                            # In case the user enters the wrong credentials
                             else:
                                 print("Wrong credentials!")
                                 time.sleep(0.7)
