@@ -35,6 +35,9 @@ Ensure you have the following installed:
 1. Clone the repository:
     ```sh
     git clone https://github.com/NSANTRA/Library-Management-System.git
+    
+    Then change directory:
+    ```sh
     cd Library-Management-System
 2. Install the required Python packages:
     ```sh
