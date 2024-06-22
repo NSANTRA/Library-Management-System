@@ -12,6 +12,7 @@ The **Library Management System (LMS)** is a command-line-based application desi
 4. **Database Integration**: Utilizes MySQL for data storage, ensuring data integrity and persistence
 
 ## Getting Satrted
+
 ### Prequisites
 
 Ensure you have the following installed:
@@ -32,20 +33,22 @@ Ensure you have the following installed:
     pip install mysql-connector-python pandas sqlalchemy pwinput -->
 
 ### Installation
+
 1. Clone the repository:
     ```sh
     git clone https://github.com/NSANTRA/Library-Management-System.git
     ```
-    Then change directory:
+2. Then change directory:
     ```sh
     cd Library-Management-System
     ```
-2. Install the required Python packages:
+3. Install the required Python packages:
     ```sh
     pip install -r requirements.txt
     ```
 
 ### Usage
+
 Run the **lms.py** script to start the application:
 ```sh
 py lms.py
@@ -53,12 +56,15 @@ py lms.py
 Follow the on-screen prompts to navigate through the system's functionalities.
 
 ### Admin Login
+
 Use the following credentials to log in as an admin:
 - **Username**: admin
 - **Password**: admin
 
 ## Features
+
 ### Admin Features
+
 1. **Add Books**: Admins can add new books to the library's inventory. This includes entering details such as:
     - **Title**: The name of the book.
     - **Author**: The author of the book.
@@ -80,6 +86,7 @@ Use the following credentials to log in as an admin:
 5. **View Users**: Admins can view the list of all registered users. This includes accessing user details such as user ID, name, and contact information. This feature aids in user management and monitoring user activities.
 
 ### User Features
+
 1. **Register**: New users can create an account by providing necessary information such as Name, contact information, and password.
 This feature allows users to access the library's resources and services.
 
@@ -94,3 +101,9 @@ This feature allows users to access the library's resources and services.
 6. **Update Profile**: Users can update their personal information, including name, contact details, and password. This feature ensures that user profiles are current and accurate.
 
 7. **Delete Account**: Users can delete their accounts if they no longer wish to use the library services. This feature allows users to manage their presence and data within the system.
+
+## File Structure
+    - **lms.py** - The main script for running the Library Management System. This script contains all core functionalities and commands for both admin and user operations.
+    - **README.md** - This file, providing detailed information about the project, including installation, configuration, and usage instructions.
+    - **requirements.txt** - A file listing all required Python libraries. Running pip install -r requirements.txt will install all necessary dependencies.
+    - **script.bat** - (Optional) A batch script for automating certain tasks. Not directly related to lms.py or README.md.
