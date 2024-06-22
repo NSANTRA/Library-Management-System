@@ -35,18 +35,21 @@ Ensure you have the following installed:
 1. Clone the repository:
     ```sh
     git clone https://github.com/NSANTRA/Library-Management-System.git
-    
+    ```
     Then change directory:
     ```sh
     cd Library-Management-System
+    ```
 2. Install the required Python packages:
     ```sh
     pip install -r requirements.txt
+    ```
 
 ### Usage
 Run the **lms.py** script to start the application:
-    ```sh
-    py lms.py
+```sh
+py lms.py
+```
 Follow the on-screen prompts to navigate through the system's functionalities.
 
 ### Admin Login
