@@ -4,7 +4,7 @@ The basic structure of the LMS Project is completed but I am still implementing 
 **Username: admin**
 **Password: admin**
 
-### Note: 
+#### Note: The **script.bat** file is to make it easier for me to perform git operations.
 
 ## Prerequisites
 
