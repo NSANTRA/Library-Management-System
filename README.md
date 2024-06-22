@@ -4,6 +4,8 @@ The basic structure of the LMS Project is completed but I am still implementing 
 **Username: admin**
 **Password: admin**
 
+### Note: 
+
 ## Prerequisites
 
 Before running the LMS, ensure you have the following installed:
