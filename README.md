@@ -11,7 +11,7 @@ The **Library Management System (LMS)** is a command-line-based application desi
 3. **Issue Management**: Issue books to users, track issued books, and manage return processes.
 4. **Database Integration**: Utilizes MySQL for data storage, ensuring data integrity and persistence
 
-## Getting Satrted
+## Getting Started
 
 ### Prequisites
 
@@ -20,17 +20,6 @@ Ensure you have the following installed:
 1. **Python 3.x** - [Download Python](https://www.python.org/downloads/)
 2. **MySQL Server** - [Download MySQL Server](https://dev.mysql.com/downloads/installer/)
 3. Ensure MySQL Server is running and accessible.
-4. The following Python libraries:
-    - `mysql-connector-python`
-    - `pandas`
-    - `sqlalchemy`
-    - `urllib.parse`
-    - `pwinput`
-
-    <!-- To install these Python libraries, you can use the following command:
-
-    ```sh
-    pip install mysql-connector-python pandas sqlalchemy pwinput -->
 
 ### Installation
 
@@ -103,7 +92,19 @@ This feature allows users to access the library's resources and services.
 7. **Delete Account**: Users can delete their accounts if they no longer wish to use the library services. This feature allows users to manage their presence and data within the system.
 
 ## File Structure
-- **lms.py** - The main script for running the Library Management System. This script contains all core functionalities and commands for both admin and user operations.
-- **README.md** - This file, providing detailed information about the project, including installation, configuration, and usage instructions.
-- **requirements.txt** - A file listing all required Python libraries. Running pip install -r requirements.txt will install all necessary dependencies.
-- **script.bat** - (Optional) A batch script for automating certain tasks. Not directly related to lms.py or README.md.
+
+1. **lms.py** - The main script for running the Library Management System. This script contains all core functionalities and commands for both admin and user operations.
+2. **README.md** - This file, providing detailed information about the project, including installation, configuration, and usage instructions.
+3. **requirements.txt** - A file listing all required Python libraries. Running pip install -r requirements.txt will install all necessary dependencies.
+4. **script.bat** - (Optional) A batch script for automating certain tasks. Not directly related to lms.py or README.md.
+
+## Future Development
+
+- **Detailed Book Information**: Additional fields and details for book records.
+- **User Activity Logs**: Tracking of user activities and book issue/return history.
+- **Graphical User Interface (GUI)**: Development of a GUI to provide a more intuitive and user-friendly experience.
+
+## Note
+
+1. The lms.py script runs purely on the Command-Line Interface (CLI) and does not include a Graphical User Interface (GUI).
+2. This structure ensures that all features are easily accessible and maintainable, keeping the project organized and user-friendly.
