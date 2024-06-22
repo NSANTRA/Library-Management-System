@@ -4,13 +4,14 @@ from sqlalchemy import create_engine
 from urllib.parse import quote_plus
 import time
 import os
+from pwinput import pwinput
 
 # Class Start
 class System:
     def __init__(self):
         # Password for the MySQL Server Connection
         usr = input("Enter your MySQL username: ")
-        pas = input("Enter your MySQL password: ")
+        pas = pwinput("Enter your MySQL password: ", mask = "*")
 
         # Establishing connection
         self.mydb = conn.connect(host = 'localhost', user = usr, passwd = pas)
@@ -38,7 +39,7 @@ class System:
                 self.mycursor.execute("CREATE TABLE IF NOT EXISTS Books (Book_ID INT AUTO_INCREMENT PRIMARY KEY, Title VARCHAR(255) NOT NULL, Author VARCHAR(255) NOT NULL, Available BOOLEAN NOT NULL DEFAULT 1, INDEX (Title))")
 
                 # Create Users table
-                self.mycursor.execute("CREATE TABLE IF NOT EXISTS Users (User_ID INT AUTO_INCREMENT PRIMARY KEY, Name VARCHAR(255) NOT NULL, Email VARCHAR(255) NOT NULL, Password CHAR(12) NOT NULL CHECK (CHAR_LENGTH(Password) >= 4), INDEX (Email))")
+                self.mycursor.execute("CREATE TABLE IF NOT EXISTS Users (User_ID INT AUTO_INCREMENT PRIMARY KEY, Name VARCHAR(255) UNIQUE NOT NULL, Email VARCHAR(255) NOT NULL, Password CHAR(12) NOT NULL CHECK (CHAR_LENGTH(Password) >= 4), INDEX (Email))")
 
                 # Create Issues table
                 self.mycursor.execute("CREATE TABLE IF NOT EXISTS Issues (Issue_ID INT AUTO_INCREMENT PRIMARY KEY, User_ID INT NOT NULL, Name VARCHAR(255) NOT NULL, Book_ID INT NOT NULL, Title VARCHAR(255) NOT NULL, Issue_Date DATETIME, FOREIGN KEY (User_ID) REFERENCES Users(User_ID), FOREIGN KEY (Book_ID) REFERENCES Books(Book_ID))")
@@ -46,17 +47,18 @@ class System:
                 # Commit changes
                 self.mydb.commit()
                 print("Database and Tables created successfully.")
-                time.sleep(2)
+                time.sleep(.7)
 
             except Exception as e:
                 print(f"Error during database initialization: {e}")
+                time.sleep(.7)
 
         else:
             print("Connection Failure")
+            time.sleep(.7)
 
 
     # Books Management System Options Start
-
     def create(self):
         bname = input("Enter Title: ")
         authname = input("Enter Author Name: ")
@@ -78,7 +80,8 @@ class System:
             os.system('cls')
             a = int(input("1. Show All Books\n2. Filter\n3. Back\n\nEnter the choice: "))
             match a:
-            # Shows all Book Records
+                
+                # Shows all Book Records
                 case 1:
                     while True:
                         os.system('cls')
@@ -88,41 +91,58 @@ class System:
                         
                         b = int(input("1. Original List\n2. Sort\n3. Back\n\nEnter the choice: "))
                         match b:
+                            
+                            # Original List
                             case 1:
                                 os.system('cls')
                                 print("-------------------------BOOKS AVAILABLE ON OUR SHELF-------------------------")
                                 print()
                                         
                                 if not res.empty:
-                                    print(res)
+                                    print(res.to_string(index = False))
                                     input("\nPress Enter to continue...")
                                 
                                 else:
                                     print("No records found")
                                     time.sleep(.7)
 
+                            # Sorted List
                             case 2:
                                 while True:
                                     os.system('cls')
                                     c = int(input("1. Title\n2. Author\n3. Back\n\nEnter the choice: "))
                                     match c:
-                                        # Sort according ot Title
+
+                                        # Sort according to Title
                                         case 1:
                                             while True:
                                                 os.system('cls')
                                                 d = int(input("1. Ascending A-Z\n2. Descending Z-A\n3. Back\n\nEnter the choice: "))
                                                 match d:
+
+                                                    # Ascending
                                                     case 1:
                                                         os.system('cls')
-                                                        print("----------------------------SORTING BASED ON TITLE----------------------------")
-                                                        print(res.sort_values(by = 'Title'))
-                                                        input("\nPress Enter to continue...")
+                                                        print("----------------------------ASCENDING SORTING BASED ON TITLE----------------------------")
+                                                        
+                                                        if not res.empty:
+                                                            print(res.sort_values(by = 'Title'))
+                                                            input("\nPress Enter to continue...")
+                                                        else:
+                                                            print("No records found")
+                                                            time.sleep(.7)
 
+                                                    # Descending
                                                     case 2:
                                                         os.system('cls')
-                                                        print("-------------------------SORTING BASED ON TITLE-------------------------")
-                                                        print(res.sort_values(by = 'Title', ascending = False))
-                                                        input("\nPress Enter to continue...")
+                                                        print("----------------------------DESCENDING SORTING BASED ON TITLE----------------------------")
+                                                        
+                                                        if not res.empty:
+                                                            print(res.sort_values(by = 'Title', ascending = False))
+                                                            input("\nPress Enter to continue...")
+                                                        else:
+                                                            print("No records found")
+                                                            time.sleep(.7)
 
                                                     case 3:
                                                         break
@@ -139,15 +159,25 @@ class System:
                                                 match e:
                                                     case 1:
                                                         os.system('cls')
-                                                        print("----------------------------SORTING BASED ON AUTHOR----------------------------")
-                                                        print(res.sort_values(by = 'Author'))
-                                                        input("\nPress Enter to continue...")
+                                                        print("----------------------------ASCENDING SORTING BASED ON AUTHOR----------------------------")
+                                                        
+                                                        if not res.empty:
+                                                            print(res.sort_values(by = 'Author'))
+                                                            input("\nPress Enter to continue...")
+                                                        else:
+                                                            print("No records found")
+                                                            time.sleep(.7)
 
                                                     case 2:
                                                         os.system('cls')
-                                                        print("----------------------------SORTING BASED ON AUTHOR----------------------------")
-                                                        print(res.sort_values(by = 'Author', ascending = False))
-                                                        input("\nPress Enter to continue...")
+                                                        print("----------------------------DESCENDING SORTING BASED ON AUTHOR----------------------------")
+                                                        
+                                                        if not res.empty:
+                                                            print(res.sort_values(by = 'Author', ascending = False))
+                                                            input("\nPress Enter to continue...")
+                                                        else:
+                                                            print("No records found")
+                                                            time.sleep(.7)
 
                                                     case 3:
                                                         break
@@ -177,15 +207,19 @@ class System:
                         print("Filter by:")
                         b = int(input("1. Book ID\n2. Title\n3. Author\n4. Available\n5. Back\n\nEnter the choice: "))
                         match b:
+
                             # Filter by Book ID
                             case 1:
                                 id = int(input("Search Book ID: "))
                                 os.system('cls')
 
+                                res = pd.read_sql_query("SELECT * FROM LMS.Books", self.engine)
+
                                 if not res.empty and id in res['Book_ID'].values:
                                     sql = f"SELECT * FROM LMS.Books WHERE Book_ID = {id};"
                                     res = pd.read_sql_query(sql, self.engine)
-                                    print(res)
+
+                                    print(res.to_string(index = False))
                                     input("\nPress Enter to continue...")
                                 
                                 else:
@@ -201,7 +235,7 @@ class System:
                                 res = pd.read_sql_query(sql, self.engine)
 
                                 if not res.empty:
-                                    print(res)                        
+                                    print(res.to_string(index = False))                        
                                     input("\nPress Enter to continue...")
 
                                 else:
@@ -217,7 +251,7 @@ class System:
                                 res = pd.read_sql_query(sql, self.engine)
 
                                 if not res.empty:
-                                    print(res)
+                                    print(res.to_string(index = False))
                                     input("\nPress Enter to continue...")
                                 
                                 else:
@@ -231,7 +265,7 @@ class System:
                                 res = pd.read_sql_query(sql, self.engine)
 
                                 if not res.empty:
-                                    print(res)
+                                    print(res.to_string(index = False))
                                     input("\nPress Enter to continue...")
                                 
                                 else:
@@ -266,7 +300,7 @@ class System:
             res = pd.read_sql_query(sql, self.engine)
             
             if not res.empty and  id in res['Book_ID'].values:
-                print(res)
+                print(res.to_string(index = False))
                 print()
                 a = int(input("\nUpdate:\n1. Title\n2. Author\n3. Back\n\nEnter the choice: "))
                 match a:
@@ -368,7 +402,7 @@ class System:
         res = pd.read_sql_query(sql, self.engine)
 
         if not res.empty:
-            print(res)
+            print(res.to_string(index = False))
             print()
 
             bid = int(input("Return Book ID: "))
@@ -400,24 +434,31 @@ class System:
     def uadd(self):
         name = input("Enter Name: ")
         email = input("Enter Email ID: ")
-        pas = input("Password: ")
+        pas = pwinput("Password: ", mask = "*")
 
-        if len(pas) >= 4:
-            sql = "INSERT INTO Users (Name, Email, Password) VALUES (%s, %s, %s);"
-            val = (name, email, pas)
+        res = pd.read_sql_query("SELECT Name FROM LMS.Users;", self.engine)
 
-            self.mycursor.execute(sql, val)
-            self.mydb.commit()
+        if name not in res.values:
+            if len(pas) >= 4:
+                sql = "INSERT INTO Users (Name, Email, Password) VALUES (%s, %s, %s);"
+                val = (name, email, pas)
 
-            res = pd.read_sql_query(f"SELECT User_ID FROM LMS.Users WHERE Name = '{name}';", self.engine)
+                self.mycursor.execute(sql, val)
+                self.mydb.commit()
 
-            print("Successfully registered!")
-            # time.sleep(.7)
-            print(f"Your User ID is {res['User_ID'].values}")
-            input("Press Enter to Continue...")
+                res = pd.read_sql_query(f"SELECT User_ID FROM LMS.Users WHERE Name = '{name}';", self.engine)
+
+                print("Successfully registered!")
+                # time.sleep(.7)
+                print(f"Your User ID is {res['User_ID'].values}")
+                input("Press Enter to Continue...")
+            
+            else:
+                print("Password length should be >= 4!")
+                time.sleep(.7)
         
         else:
-            print("Password length should be >= 4!")
+            print("User already exists!")
             time.sleep(.7)
     
     def ushow(self):
@@ -431,7 +472,7 @@ class System:
             match a:
                 case 1:      # Show All Users
                     if not res.empty:
-                        print(res)
+                        print(res.to_string(index = False))
                         input("\nPress Enter to continue...")
                     
                     else:
@@ -452,7 +493,7 @@ class System:
                                 if not res.empty and id in res['User_ID'].values:
                                     sql = f"SELECT * FROM LMS.Users WHERE User_ID = {id};"
                                     res = pd.read_sql_query(sql, self.engine)
-                                    print(res)
+                                    print(res.to_string(index = False))
                                     input("\nPress Enter to continue...")
                                 
                                 else:
@@ -467,7 +508,7 @@ class System:
                                 res = pd.read_sql_query(sql, self.engine)
 
                                 if not res.empty:
-                                    print(res)
+                                    print(res.to_string(index = False))
                                     input("\nPress Enter to continue...")
                                 
                                 else:
@@ -482,7 +523,7 @@ class System:
                                 res = pd.read_sql_query(sql, self.engine)
 
                                 if not res.empty:
-                                    print(res)
+                                    print(res.to_string(index = False))
                                     input("\nPress Enter to continue...")
                                 
                                 else:
@@ -545,8 +586,8 @@ class System:
                 case 3:
                     for i in range(3, 0, -1):
                         os.system('cls')
-                        pwd = input("Update Password: ")
-                        repeat = input("Re-enter Password: ")
+                        pwd = pwinput("Update Password: ", mask = "*")
+                        repeat = pwinput("Re-enter Password: ", mask = "*")
 
                         if len(pwd) >= 4:
                             if repeat == pwd:
@@ -605,7 +646,7 @@ if __name__ == "__main__":
             # Password: admin
             case 1:
                 uname = input("Username: ")
-                pwd = input("Password: ")
+                pwd = pwinput("Password: ", mask = "*")
 
                 if uname == "admin" and pwd == "admin":
                     os.system('cls')
@@ -678,7 +719,7 @@ if __name__ == "__main__":
                         case 2:
                             # Code for reading user login
                             uid = input("User ID: ")
-                            pwd = input("Password: ")
+                            pwd = pwinput("Password: ", mask = "*")
 
                             # Query the database for validation of user login credentials
                             __sql__ = f"SELECT * FROM LMS.Users WHERE User_ID = {uid} AND Password = {pwd};"
