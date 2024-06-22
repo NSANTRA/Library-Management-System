@@ -53,39 +53,38 @@ Use the following credentials to log in as an admin:
 
 ## Features
 ### Admin Features
-1. Add Books: Admins can add new books to the library's inventory. This includes entering details such as:
+1. **Add Books**: Admins can add new books to the library's inventory. This includes entering details such as:
     - **Title**: The name of the book.
     - **Author**: The author of the book.
     - **Quantity**: The number of copies available.
 
-This feature ensures that the library catalog is always up-to-date with the latest acquisitions and accurate inventory levels.
+    This feature ensures that the library catalog is always up-to-date with the latest acquisitions and accurate inventory levels.
 
-2. Modify Books: Admins can update the details of existing books in the inventory. This allows for corrections and updates to Title, Author, and Quantity. Keeping book records accurate and current improves the reliability of the library's database.
+2. **Modify Books**: Admins can update the details of existing books in the inventory. This allows for corrections and updates to Title, Author, and Quantity. Keeping book records accurate and current improves the reliability of the library's database.
 
-3. Delete Books: Admins can remove books from the library's inventory. This includes deleting books that are no longer available or needed. This helps in managing the inventory by removing outdated or irrelevant entries.
+3. **Delete Books**: Admins can remove books from the library's inventory. This includes deleting books that are no longer available or needed. This helps in managing the inventory by removing outdated or irrelevant entries.
 
-4. View Books: Admins can view the list of all available books in the library. This includes capabilities to:
+4. **View Books**: Admins can view the list of all available books in the library. This includes capabilities to:
     - Browse the complete catalog.
     - Search for specific books using filters such as title, author, and availability.
     - Sort books based on various criteria such as publication year, author name, or title.
 
-This provides admins with a comprehensive view of the library's collection and inventory status.
+    This provides admins with a comprehensive view of the library's collection and inventory status.
 
-5. View Users: Admins can view the list of all registered users. This includes accessing user details such as user ID, name, and contact information.
-This feature aids in user management and monitoring user activities.
+5. **View Users**: Admins can view the list of all registered users. This includes accessing user details such as user ID, name, and contact information. This feature aids in user management and monitoring user activities.
 
 ### User Features
-1. Register: New users can create an account by providing necessary information such as Name, contact information, and password.
+1. **Register**: New users can create an account by providing necessary information such as Name, contact information, and password.
 This feature allows users to access the library's resources and services.
 
-2. Login: Existing users can log in using their username and password. Secure access ensures that only registered users can utilize the library's functionalities.
+2. **Login**: Existing users can log in using their username and password. Secure access ensures that only registered users can utilize the library's functionalities.
 
-3. Issue Books: Users can borrow books from the library by selecting the desired book and initiating the issue process. The system records the issue date and sets a due date for return. This feature manages book circulation and ensures users can borrow books efficiently.
+3. **Issue Books**: Users can borrow books from the library by selecting the desired book and initiating the issue process. The system records the issue date and sets a due date for return. This feature manages book circulation and ensures users can borrow books efficiently.
 
-4. Return Books: Users can return borrowed books by identifying the book being returned and confirming the return process. The system updates the inventory to reflect the return. This feature ensures that borrowed books are tracked and returned on time.
+4. **Return Books**: Users can return borrowed books by identifying the book being returned and confirming the return process. The system updates the inventory to reflect the return. This feature ensures that borrowed books are tracked and returned on time.
 
-5. View Books: Users can view the list of all available books in the library. This includes browsing the catalog, searching for specific books, and filtering by criteria such as title, author, or availability. Users can find and choose books they are interested in borrowing.
+5. **View Books**: Users can view the list of all available books in the library. This includes browsing the catalog, searching for specific books, and filtering by criteria such as title, author, or availability. Users can find and choose books they are interested in borrowing.
 
-6. Update Profile: Users can update their personal information, including name, contact details, and password. This feature ensures that user profiles are current and accurate.
+6. **Update Profile**: Users can update their personal information, including name, contact details, and password. This feature ensures that user profiles are current and accurate.
 
-7. Delete Account: Users can delete their accounts if they no longer wish to use the library services. This feature allows users to manage their presence and data within the system.
+7. **Delete Account**: Users can delete their accounts if they no longer wish to use the library services. This feature allows users to manage their presence and data within the system.
