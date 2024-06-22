@@ -1,0 +1,7 @@
+pandas
+mysql-connector-python
+sqlalchemy
+urllib
+pwinput
+os
+time
