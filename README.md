@@ -103,7 +103,7 @@ This feature allows users to access the library's resources and services.
 7. **Delete Account**: Users can delete their accounts if they no longer wish to use the library services. This feature allows users to manage their presence and data within the system.
 
 ## File Structure
-    - **lms.py** - The main script for running the Library Management System. This script contains all core functionalities and commands for both admin and user operations.
-    - **README.md** - This file, providing detailed information about the project, including installation, configuration, and usage instructions.
-    - **requirements.txt** - A file listing all required Python libraries. Running pip install -r requirements.txt will install all necessary dependencies.
-    - **script.bat** - (Optional) A batch script for automating certain tasks. Not directly related to lms.py or README.md.
+- **lms.py** - The main script for running the Library Management System. This script contains all core functionalities and commands for both admin and user operations.
+- **README.md** - This file, providing detailed information about the project, including installation, configuration, and usage instructions.
+- **requirements.txt** - A file listing all required Python libraries. Running pip install -r requirements.txt will install all necessary dependencies.
+- **script.bat** - (Optional) A batch script for automating certain tasks. Not directly related to lms.py or README.md.
